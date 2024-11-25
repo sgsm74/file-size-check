@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ValidateContentLength
 {
-    const MAX_FILE_SIZE = 10; // 1GB in bytes
 
     /**
      * Handle an incoming request.
@@ -17,11 +16,11 @@ class ValidateContentLength
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Get the Content-Length header
+        $maxSize = 10; // 1GB in bytes
         $contentLength = $request->header('Content-Length');
 
-        if ($contentLength && (int) $contentLength > self::MAX_FILE_SIZE) {
-            return response()->json(['error' => 'File size exceeds 1GB limit'], Response::HTTP_REQUEST_ENTITY_TOO_LARGE);
+        if ($contentLength && $contentLength > $maxSize) {
+            return response()->json(['error' => 'File too large!'], 413);
         }
 
         return $next($request);
