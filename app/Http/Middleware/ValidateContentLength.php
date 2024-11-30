@@ -16,11 +16,11 @@ class ValidateContentLength
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $maxSize = 10; // 1GB in bytes
-        $contentLength = $request->header('Content-Length');
+        $maxSize = 2 * 1024 * 1024; // 2MB in bytes
 
-        if ($contentLength && $contentLength > $maxSize) {
-            return response()->json(['error' => 'File too large!'], 413);
+        $contentLength = (int) $request->header('Content-Length');
+        if ($contentLength > $maxSize) {
+            return response()->json(['error' => 'File size exceeds 2MB'], 413); // HTTP 413 Payload Too Large
         }
 
         return $next($request);
