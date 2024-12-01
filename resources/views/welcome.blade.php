@@ -41,6 +41,7 @@
                     body: formData,
                     headers: {
                         'Accept': 'application/json',
+                        'Content-Length': file.size,
                     }
                 });
 
